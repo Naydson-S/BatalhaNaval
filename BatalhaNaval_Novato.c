@@ -5,61 +5,123 @@
 
 int main() {
 
-    // 1️⃣ Declara o tabuleiro
+    // ==============================
+    // 1️⃣ Declaração do tabuleiro
+    // ==============================
     int tabuleiro[TAM][TAM];
 
-    // 2️⃣ Inicializa com 0 (água)
+    // Inicializa todo o tabuleiro com 0 (água)
     for (int i = 0; i < TAM; i++) {
         for (int j = 0; j < TAM; j++) {
             tabuleiro[i][j] = 0;
         }
     }
 
-    // 3️⃣ Coordenadas definidas no código
+    // ==============================
+    // 2️⃣ Coordenadas dos navios
+    // ==============================
 
     // Navio Horizontal
-    int linhaH = 2;
-    int colunaH = 4;
+    int linhaH = 1;
+    int colunaH = 2;
 
     // Navio Vertical
     int linhaV = 5;
-    int colunaV = 1;
+    int colunaV = 0;
 
-    // 4️⃣ Validação de limites
+    // Navio Diagonal Principal (↘)
+    int linhaD1 = 2;
+    int colunaD1 = 2;
 
-    if (colunaH + TAM_NAVIO <= TAM &&
-        linhaV + TAM_NAVIO <= TAM) {
+    // Navio Diagonal Secundária (↙)
+    int linhaD2 = 0;
+    int colunaD2 = 9;
 
-        // 5️⃣ Verificação simples de sobreposição
-        if (tabuleiro[linhaH][colunaH] == 0 &&
-            tabuleiro[linhaH][colunaH + 1] == 0 &&
-            tabuleiro[linhaH][colunaH + 2] == 0 &&
-            tabuleiro[linhaV][colunaV] == 0 &&
-            tabuleiro[linhaV + 1][colunaV] == 0 &&
-            tabuleiro[linhaV + 2][colunaV] == 0) {
+    // ==============================
+    // 3️⃣ NAVIO HORIZONTAL
+    // ==============================
 
-            // 6️⃣ Posicionamento manual (SEM LOOP)
+    if (colunaH + TAM_NAVIO <= TAM) {
 
-            // Navio horizontal
-            tabuleiro[linhaH][colunaH] = 3;
-            tabuleiro[linhaH][colunaH + 1] = 3;
-            tabuleiro[linhaH][colunaH + 2] = 3;
+        int sobreposicao = 0;
 
-            // Navio vertical
-            tabuleiro[linhaV][colunaV] = 3;
-            tabuleiro[linhaV + 1][colunaV] = 3;
-            tabuleiro[linhaV + 2][colunaV] = 3;
-
-        } else {
-            printf("Erro: Sobreposição de navios!\n");
+        for (int i = 0; i < TAM_NAVIO; i++) {
+            if (tabuleiro[linhaH][colunaH + i] != 0)
+                sobreposicao = 1;
         }
 
-    } else {
-        printf("Erro: Navio fora dos limites!\n");
+        if (!sobreposicao) {
+            for (int i = 0; i < TAM_NAVIO; i++) {
+                tabuleiro[linhaH][colunaH + i] = 3;
+            }
+        }
     }
 
-    // 7️⃣ Exibe o tabuleiro
-    printf("\n=== TABULEIRO ===\n\n");
+    // ==============================
+    // 4️⃣ NAVIO VERTICAL
+    // ==============================
+
+    if (linhaV + TAM_NAVIO <= TAM) {
+
+        int sobreposicao = 0;
+
+        for (int i = 0; i < TAM_NAVIO; i++) {
+            if (tabuleiro[linhaV + i][colunaV] != 0)
+                sobreposicao = 1;
+        }
+
+        if (!sobreposicao) {
+            for (int i = 0; i < TAM_NAVIO; i++) {
+                tabuleiro[linhaV + i][colunaV] = 3;
+            }
+        }
+    }
+
+    // ==============================
+    // 5️⃣ NAVIO DIAGONAL PRINCIPAL (↘)
+    // ==============================
+
+    if (linhaD1 + TAM_NAVIO <= TAM && colunaD1 + TAM_NAVIO <= TAM) {
+
+        int sobreposicao = 0;
+
+        for (int i = 0; i < TAM_NAVIO; i++) {
+            if (tabuleiro[linhaD1 + i][colunaD1 + i] != 0)
+                sobreposicao = 1;
+        }
+
+        if (!sobreposicao) {
+            for (int i = 0; i < TAM_NAVIO; i++) {
+                tabuleiro[linhaD1 + i][colunaD1 + i] = 3;
+            }
+        }
+    }
+
+    // ==============================
+    // 6️⃣ NAVIO DIAGONAL SECUNDÁRIA (↙)
+    // ==============================
+
+    if (linhaD2 + TAM_NAVIO <= TAM && colunaD2 - (TAM_NAVIO - 1) >= 0) {
+
+        int sobreposicao = 0;
+
+        for (int i = 0; i < TAM_NAVIO; i++) {
+            if (tabuleiro[linhaD2 + i][colunaD2 - i] != 0)
+                sobreposicao = 1;
+        }
+
+        if (!sobreposicao) {
+            for (int i = 0; i < TAM_NAVIO; i++) {
+                tabuleiro[linhaD2 + i][colunaD2 - i] = 3;
+            }
+        }
+    }
+
+    // ==============================
+    // 7️⃣ Exibição do tabuleiro
+    // ==============================
+
+    printf("\n===== TABULEIRO BATALHA NAVAL =====\n\n");
 
     for (int i = 0; i < TAM; i++) {
         for (int j = 0; j < TAM; j++) {
